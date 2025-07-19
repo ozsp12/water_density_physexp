@@ -2,7 +2,7 @@
 
 This repository contains the source code and data used in the article:
 
-Osvaldo L. Santos-Pereira. Experimental physics laboratory 2: calculating the value of water density using metal rod and water container. Rev Bras Ensino Fís. 2025;47:e20250044  
+Osvaldo L. Santos-Pereira (https://orcid.org/0000-0003-2231-517X). Experimental physics laboratory 2: calculating the value of water density using metal rod and water container. Rev Bras Ensino Fís. 2025;47:e20250044  
 doi: https://doi.org/10.1590/1806-9126-RBEF-2025-0044  
 🔗 HTML version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?lang=en  
 🔗 PDF version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?format=pdf&lang=en  
