@@ -4,17 +4,17 @@ This repository contains the source code and data used in the article:
 
 Osvaldo L. Santos-Pereira. Experimental physics laboratory 2: calculating the value of water density using metal rod and water container. Rev Bras Ensino Fís. 2025;47:e20250044  
 doi: https://doi.org/10.1590/1806-9126-RBEF-2025-0044  
-🔗 HTML version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?lang=en  
-🔗 PDF version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?format=pdf&lang=en  
+HTML version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?lang=en  
+PDF version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?format=pdf&lang=en  
 ORCID: https://orcid.org/0000-0003-2231-517X
 
 Published in the *Revista Brasileira de Ensino de Física* (RBEF) — an open-access, peer-reviewed Brazilian journal indexed in major academic databases — the article presents a pedagogical approach based on classroom experiences during an experimental physics course taught at the Federal University of Rio de Janeiro (UFRJ) in the second semester of 2024. All code examples, data files, and supporting materials provided in this repository aim to reproduce and extend the results and didactic strategies discussed in the article. 
 
 The work addresses common conceptual difficulties encountered by students and proposes integrating modern computational tools to improve understanding and engagement. Specifically, it explores:
 
-- 🖼️ **Generation of images using artificial intelligence** to visualize physical phenomena  
-- 🧪 **Use of synthetic data** to simulate experiments and reinforce theoretical concepts  
-- 🐍 **Application of high-level programming languages (e.g., Python)** to solve classical physics problems in an accessible and reproducible way
+- **Generation of images using artificial intelligence** to visualize physical phenomena  
+- **Use of synthetic data** to simulate experiments and reinforce theoretical concepts  
+- **Application of high-level programming languages (e.g., Python)** to solve classical physics problems in an accessible and reproducible way
 
 
 # Abstract
@@ -25,9 +25,9 @@ Keywords: Water density; Physics 2; Laboratory experiment; Hydrostatics
 
 The following supplementary materials are available for this article:
 
-- 📄 [Appendix A: Ordinary Least Squares](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/ec3428e4b923cfdcc92ab8efd813cd384fb08a8c.pdf)
-- 📄 [Appendix B: Error in Estimator *a*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/13a1bebc3a6ced4a01f75e21d171a4e8fa41790f.pdf)
-- 📄 [Appendix C: Error in Estimator *b*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/538240a626ca78d19a3abdff01a07325cfe7e3de.pdf)
+- [Appendix A: Ordinary Least Squares](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/ec3428e4b923cfdcc92ab8efd813cd384fb08a8c.pdf)
+- [Appendix B: Error in Estimator *a*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/13a1bebc3a6ced4a01f75e21d171a4e8fa41790f.pdf)
+- [Appendix C: Error in Estimator *b*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/538240a626ca78d19a3abdff01a07325cfe7e3de.pdf)
 
 # References
 [01] R.P. Feynman, R.B. Leighton and M. Sands, The Feynman Lectures on Physics (Basic Books, New York, 2011), v. 1.  
