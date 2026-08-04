@@ -1,73 +1,86 @@
-# water_density_physexp
+# Determining Water Density in an Experimental Physics Laboratory
 
-This repository contains the source code and data used in the article:
+This repository contains the computational material associated with:
 
-Osvaldo L. Santos-Pereira. Experimental physics laboratory 2: calculating the value of water density using metal rod and water container. Rev Bras Ensino Fís. 2025;47:e20250044  
-doi: https://doi.org/10.1590/1806-9126-RBEF-2025-0044  
-HTML version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?lang=en  
-PDF version: https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?format=pdf&lang=en  
-ORCID: https://orcid.org/0000-0003-2231-517X
+> O. L. Santos-Pereira, “Experimental physics laboratory 2: calculating the value of water density using metal rod and water container,” *Revista Brasileira de Ensino de Física* **47**, e20250044 (2025). [https://doi.org/10.1590/1806-9126-RBEF-2025-0044](https://doi.org/10.1590/1806-9126-RBEF-2025-0044)
 
-Published in the *Revista Brasileira de Ensino de Física* (RBEF) — an open-access, peer-reviewed Brazilian journal indexed in major academic databases — the article presents a pedagogical approach based on classroom experiences during an experimental physics course taught at the Federal University of Rio de Janeiro (UFRJ) in the second semester of 2024. All code examples, data files, and supporting materials provided in this repository aim to reproduce and extend the results and didactic strategies discussed in the article. 
+[Article in HTML](https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?lang=en) · [Article in PDF](https://www.scielo.br/j/rbef/a/Fw5FynMVn34trTTMCzTVLnv/?format=pdf&lang=en)
 
-The work addresses common conceptual difficulties encountered by students and proposes integrating modern computational tools to improve understanding and engagement. Specifically, it explores:
+The project accompanies an undergraduate hydrostatics experiment taught at the Federal University of Rio de Janeiro. A metal rod is progressively immersed in water while the apparent mass indicated by a balance and the displaced volume are recorded. The material emphasizes physical modeling, measurement uncertainty, ordinary least squares, and reproducible scientific computation.
 
-- **Generation of images using artificial intelligence** to visualize physical phenomena  
-- **Use of synthetic data** to simulate experiments and reinforce theoretical concepts  
-- **Application of high-level programming languages (e.g., Python)** to solve classical physics problems in an accessible and reproducible way
+## Physical model
 
+For reference mass `M0`, reference volume `V0`, and water density `rho`, the linear model used by the code is
 
-# Abstract
-This article presents a detailed analysis of an undergraduate physics laboratory experiment designed to determine the density of water using fundamental measurement techniques and data analysis methods. The experimental setup consists of a precision scale, a graduated container filled with water, and a suspended metal rod held by a crank, allowing for controlled displacement measurements. The primary objective of this experiment is to reinforce essential concepts in experimental physics, particularly in deriving physical models that correlate measurable quantities, performing precise measurements, and analyzing data using ordinary least squares regression to fit linear models. This article aims to provide students with a theoretical and computational aid to explore the physical interpretations of this experiment. A theoretical framework is derived to introduce fundamental concepts of hydrostatics, Newtonian mechanics, and the main equations used in the experiment. Python code that performs analysis of the experiment is provided with thorough explanations.  
-Keywords: Water density; Physics 2; Laboratory experiment; Hydrostatics
+```text
+M(V) = M0 + rho (V - V0) = rho V + b.
+```
 
-# Supplementary Material
+The fitted slope therefore estimates the water density in grams per millilitre. The implementation uses ordinary least squares (OLS). Its standard inference assumes that volume is controlled or known with negligible error and that the mass residuals are independent, centered, and have constant variance. Error bars supplied for plotting are not silently treated as regression weights. If uncertainty in both coordinates is scientifically material, orthogonal-distance regression or a full errors-in-variables model is more appropriate.
 
-The following supplementary materials are available for this article:
+## Repository contents
+
+| File | Purpose |
+|---|---|
+| [`class_water_density.py`](class_water_density.py) | Validated and documented analysis class |
+| [`hydrostatic_experiment_determining_water_density.ipynb`](hydrostatic_experiment_determining_water_density.ipynb) | Primary reproducible tutorial |
+| [`dev_hydrostatic_experiment_determining_water_density.ipynb`](dev_hydrostatic_experiment_determining_water_density.ipynb) | Historical function-based development notebook |
+| [`ordinary_least_squares.ipynb`](ordinary_least_squares.ipynb) | Supplementary OLS and linearization notes |
+| [`mass_volume_table.tex`](mass_volume_table.tex) | LaTeX table generated by the primary notebook |
+| [`tests/`](tests/) | Regression, validation, plotting, and reproducibility tests |
+| [`requirements.yml`](requirements.yml) | Reproducible Conda environment |
+| [`REFERENCES.md`](REFERENCES.md) | Article supplements and bibliography |
+| [`CITATION.cff`](CITATION.cff) | Machine-readable citation metadata |
+
+The primary notebook imports the class. The development notebook is retained for provenance, but `class_water_density.py` is the authoritative implementation.
+
+## Installation
+
+```bash
+conda env create -f requirements.yml
+conda activate water-density-physexp
+python -m unittest discover -s tests -v
+jupyter lab
+```
+
+## Minimal example
+
+```python
+from class_water_density import WaterDensity
+
+experiment = WaterDensity(M0=200, V0=100, rho=0.997)
+data = experiment.gen_fake_data(
+    n_points=10,
+    V_min=110,
+    V_max=200,
+    err_M=0.02,
+    err_V=0.02,
+    noise=2,
+    random_state=42,
+)
+summary, results = experiment.calculate_fit()
+figure, axes = experiment.plot_regression()
+```
+
+For measured observations, load a `pandas.DataFrame` containing `M` and `V`. Optional `sigma_M` and `sigma_V` columns add error bars to the plot.
+
+```python
+experiment.set_data(measured_data)
+summary, results = experiment.calculate_fit()
+```
+
+The density estimate is `results["density"]`; its OLS standard error is `results["density_std_error"]`. The plotted band is a Student-*t* confidence band for the fitted mean, not a prediction interval for a future measurement.
+
+## Supplementary material
 
 - [Appendix A: Ordinary Least Squares](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/ec3428e4b923cfdcc92ab8efd813cd384fb08a8c.pdf)
-- [Appendix B: Error in Estimator *a*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/13a1bebc3a6ced4a01f75e21d171a4e8fa41790f.pdf)
-- [Appendix C: Error in Estimator *b*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/538240a626ca78d19a3abdff01a07325cfe7e3de.pdf)
+- [Appendix B: Error in estimator *a*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/13a1bebc3a6ced4a01f75e21d171a4e8fa41790f.pdf)
+- [Appendix C: Error in estimator *b*](https://minio.scielo.br/documentstore/1806-9126/Fw5FynMVn34trTTMCzTVLnv/538240a626ca78d19a3abdff01a07325cfe7e3de.pdf)
 
-# References
-[01] R.P. Feynman, R.B. Leighton and M. Sands, The Feynman Lectures on Physics (Basic Books, New York, 2011), v. 1.  
-[02] D. Halliday, R. Resnick and K.S. Krane, Physics (John Wiley & Sons, New Jersey, 2010), v. 2.  
-[03] H.M. Nussenzveig, Física Básica (Editora Edgar Blücher, São Paulo, 1977), v. 2.  
-[04] Universidade Federal do Rio de Janeiro, Tutorial de Física Experimental II  
-» http://fisexp2.if.ufrj.br/Fisexp2_Apostila2024.pdf  
-[05] Universidade Federal do Rio de Janeiro, Folha do Relatório 1: Estudo Experimental da Força de Empuxo  
-» http://fisexp2.if.ufrj.br/Relatorios/Relatorio_1.pdf  
-[06] P.R. Bevington and D.K. Robinson, Data Reduction and Error Analysis for the Physical Sciences (McGraw-Hill, New York, 2003), 3 ed.  
-[07] J.R. Taylor, An Introduction to Error Analysis: The Study of Uncertainties in Physical Measurements (University Science Books, Melville, 1997), 2 ed.  
-[08] E. Hill, in Physics 51 Lab Manual (University of Redlands, California, 2017).  
-» https://facweb1.redlands.edu/fac/eric_hill/Phys233/Lab/LabRefCh8%20Linear%20Regression.pdf.  
-[09] W.S. Cleveland, Visualizing Data (Hobart Press, New Jersey, 1993).  
-[10] N.G. Holmes and C.E. Wieman, Physics Today 71, 38 (2018).  
-[11] J.H. Vuolo, Fundamentos da Teoria de Erros (Editora Edgar Blücher, São Paulo, 1992).  
-[12] F.M. White, Fluid Mechanics (McGraw-Hill, New York, 2016).  
-[13] S.Y. Erinosho, International Journal for Cross Disciplinary Subjects in Education 3, 1510 (2013).  
-[14] L. Pessoa, A.V. Crisci and J.G. Magalhães, Canadian Journal of Physics Education 60, 45 (2025).  
-[15] N. Geschwind, L. Carr and H. Lewandowski, American Journal of Physics 92, 30 (2024).  
-[16] V.L.F. Mossmann, K.B. Mello, F. Catelli, H. Libardi and I.S. Damo, Revista Brasileira de Ensino de Física 24, 146 (2002).  
-[17] A. Buffler, S. Allie and F. Lubben, International Journal of Science Education 23, 1137 (2001).  
-[18] M. Parreira and M. Dickman, Revista Brasileira de Ensino de Física 42, e20190304 (2020).  
-[19] W.P. Silva, C.M.D.P.S. Silva, C.D.P.S. Silva, I.B. Soares and D.D.P.S. Silva, Revista Brasileira de Ensino de Física 24, 221 (2002).  
-[20] M.G.M. Magalhães, D. Schiel, I.M. Guerrini and E. Marega Jr., Revista Brasileira de Ensino de Física 24, 97 (2002).  
-[21] A. Medeiros and C.F. Medeiros, Revista Brasileira de Ensino de Física 24, 77 (2002).  
-[22] A. Villani and A.M.P. Carvalho, Caderno Catarinense de Ensino de Física 11, 3 (1994).
+## Author
 
-# Social Media
+**Dr. Osvaldo L. Santos-Pereira** — [Academic webpage](https://ozsp12.github.io/) · [Lattes](http://lattes.cnpq.br/6730251976463283) · [ORCID](https://orcid.org/0000-0003-2231-517X) · [Google Scholar](https://scholar.google.com/citations?user=HIZp0X8AAAAJ&hl=en) · [ResearchGate](https://www.researchgate.net/profile/Osvaldo-Santos-Pereira) · [GitHub](https://github.com/ozsp12) · [LinkedIn](https://www.linkedin.com/in/ozsp12) · [Substack](https://substack.com/@olsp1982) · [Medium](https://medium.com/@ozsp12) · [YouTube](https://www.youtube.com/@ozlsp12) · [X](https://x.com/ozsp12)
 
-Currículo Lattes: http://lattes.cnpq.br/6730251976463283  
-Webpage: https://ozsp12.github.io/  
-Substack: https://substack.com/@olsp1982  
-GitHub: https://github.com/ozsp12  
-ResearchGate: https://www.researchgate.net/profile/Osvaldo-Santos-Pereira  
-Google Scholar: https://scholar.google.com/citations?user=HIZp0X8AAAAJ&hl=en  
-ORCID: https://orcid.org/0000-0003-2231-517X  
-LinkedIn: https://www.linkedin.com/in/ozsp12  
-YouTube: https://www.youtube.com/@ozlsp12    
-TikTok: https://www.tiktok.com/@ozsp12  
-Patreon: https://www.patreon.com/ozsp12  
-Medium: https://medium.com/@ozsp12  
-X (Twitter): https://x.com/ozsp12 
+## Reuse
+
+No repository-wide software license is currently declared. Citation metadata is provided, but citation and legal permission are different matters. Third-party materials remain subject to their original terms.
